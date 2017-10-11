@@ -27,6 +27,10 @@ if ($getal > 90) {
 }
 $max = $min + 10;
 
+$tekst = "Het getal ".$getal." ligt tussen ".$min." en ".$max;
+
+$omgekeerd	=	strrev($tekst);
+
 ?>
 
 <!DOCTYPE html>
@@ -38,7 +42,10 @@ $max = $min + 10;
 <body>
    
    <h1>deel 1:</h1>
-   <p>Het getal <?php echo $getal ?> ligt tussen <?php echo $min ?> en <?php echo $max ?></p>
+   <p><?php echo $tekst ?></p>
+   
+   <h1>deel 2:</h1>
+   <p><?php echo $omgekeerd ?></p>
    
     
 </body>
