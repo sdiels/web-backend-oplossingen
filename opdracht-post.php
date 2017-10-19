@@ -4,9 +4,9 @@ $username = "stefan";
 $password = "azerty";
 $melding = "";
 
-if ( isset( $_POST ['submit'] ) )
+if ( isset( $_POST ["submit"] ) )
 	{
-		if ( $_POST['username'] == $username && $_POST['password'] == $password )
+		if ( $_POST["username"] == $username && $_POST["password"] == $password )
 		{
 			$melding = "Inloggen succesvol";
 		}
