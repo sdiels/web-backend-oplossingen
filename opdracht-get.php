@@ -42,9 +42,29 @@ $artikels = array(
 <body>
    
    <h1>De krant van vandaag</h1>
+                        
+                        <form action="opdracht-get.php" method="get">
+                            <input type="text" name="search" id="search" placeholder="Geef een woord in">
+                            <input type="submit">
+                        </form>
+                        
+                        <?php
+                            if(isset($_GET['search'])) {
+                                foreach ($artikels as $artikel){
+                                    
+                                    if(strpos( $artikel["inhoud"], $_GET["search"])){
+                                    echo '<article class="multiple">
+                                    <h2>' . $artikel["titel"] .'</h2>
+                                    <p>' . $artikel["inhoud"] . '</p>
+                                    <div class="img"><img src="images-opdracht-get/' . $artikel["afbeelding"] . '" alt="' . $artikel["afbeeldingBeschrijving"] . '"></div>
+                                    </article>';
+                                    }
+                                }
+                            }
+                        ?>
 
                         <section class="articles">
-                            <?php if($_GET['id'] == 0): ?>
+                            <?php if(isset($_GET['id']) == false && isset($_GET['search']) == false): ?>
                             <?php foreach ($artikels as $key => $artikel): ?>
                             <article class="multiple">
                                 <h2><?php echo $artikel["titel"] ?></h2>
@@ -53,7 +73,8 @@ $artikels = array(
                                 <p class="read-more"><a href="opdracht-get.php?id=<?php echo $key + 1 ?>" method="get">Lees meer</a></p>
                             </article>
                             <?php endforeach ?>
-                            <?php elseif($_GET['id'] > 3): ?>
+                            <?php elseif (isset($_GET['id'])): ?>
+                            <?php if($_GET['id'] > 3 && isset($_GET['search']) == false): ?>
                             <h2>Dit artikel bestaat niet</h2>
                             <?php else: ?>
                             <article class="multiple">
@@ -61,6 +82,7 @@ $artikels = array(
                                 <p><?php echo $artikels[$_GET['id'] - 1]["inhoud"] ?>...</p>
                                 <div class="img"><img src="images-opdracht-get/<?php echo $artikels[$_GET['id'] - 1]["afbeelding"] ?>" alt="<?php echo $artikels[$_GET['id'] - 1]["afbeeldingBeschrijving"] ?>"></div>
                             </article>
+                            <?php endif ?>
                             <?php endif ?>
                         </section>
 
