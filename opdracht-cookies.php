@@ -45,7 +45,6 @@ if ( isset( $_GET[ 'logout' ] ) )
 		setcookie( 'loggedIn', "", time() - 1000 );
 		header('location: opdracht-cookies.php');
 	}
-var_dump($_COOKIE);
 
 ?>
 
