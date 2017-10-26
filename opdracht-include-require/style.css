@@ -1,0 +1,32 @@
+    h1 {
+        font-size: 50px;
+    }
+    
+    li {
+        float: left;
+        list-style: none;
+        font-size: 30px;
+        padding: 10px;
+        border-right: 1px white solid;
+        border-left: 1px white solid;
+    }
+    
+    main {
+        background-color: white;
+        color: black;
+    }
+    
+    /*************
+   CLEARFIX
+**************/
+    
+    .cfx::before,
+    .cfx::after {
+        content: "";
+        display: table;
+        line-height: 0;
+    }
+    
+    .cfx::after {
+        clear: both;
+    }
