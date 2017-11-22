@@ -32,13 +32,6 @@
 
     <section class="portfolio-aside">
 
-        <section class="profile">
-
-            <img src="http://web-backend.local/img/theo-jansen.jpg" alt="Theo Jansen">
-            <h1>Theo Jansen</h1>
-
-        </section>
-
         <section>
             <h1>andere artikels</h1>
             <ul>
