@@ -1,16 +1,15 @@
 <?php
 
-	$message	=	false;
+	$message = false;
 
 
 	if ( isset( $_POST[ 'submit' ] ) )
 	{
 		try
 		{
-			$db = new PDO('mysql:host=localhost;dbname=bieren', 'root', '' );
+			$db = new PDO('mysql:host=127.0.0.1;dbname=bieren', 'root', '' );
 
-			$brouwerQueryString	=	'INSERT INTO brouwers (brnaam, adres, postcode, gemeente, omzet)
-										VALUES ( :brnaam, :adres, :postcode, :gemeente, :omzet )';
+			$brouwerQueryString	= 'INSERT INTO brouwers (brnaam, adres, postcode, gemeente, omzet) VALUES ( :brnaam, :adres, :postcode, :gemeente, :omzet )';
 
 			$brouwerStatement = $db->prepare( $brouwerQueryString );
 
@@ -24,19 +23,19 @@
 
 			if ( $isAdded )
 			{
-				$insertId			=	$db->lastInsertId();
-				$message['text']	=	'Brouwerij succesvol toegevoegd. Het unieke nummer van deze brouwerij is ' . $insertId . '.';
+				$insertId = $db->lastInsertId();
+				$message['text'] = 'Brouwerij succesvol toegevoegd. Het unieke nummer van deze brouwerij is ' . $insertId . '.';
 			}
 			else
 			{
-				$message['text']	=	'Er ging iets mis met het toevoegen, probeer opnieuw';
+				$message['text'] = 'Er ging iets mis met het toevoegen, probeer opnieuw';
 			}
 
 
 		}
 		catch ( PDOException $e )
 		{
-			$message['text']	=	'De connectie is niet gelukt.';
+			$message['text'] = 'De connectie is niet gelukt.';
 		}
 	}
 
@@ -60,7 +59,7 @@
     
         ?>
 
-            <form action="<?= $_SERVER['PHP_SELF'] ?>" method="POST">
+            <form action="<?php echo 'opdracht-crud-insert.php' ?>" method="POST">
 
                 <ul>
                     <li>
