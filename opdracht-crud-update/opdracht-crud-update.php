@@ -5,10 +5,15 @@
 
 	try
 	{
-		$db = new PDO('mysql:host=localhost;dbname=bieren', 'root', '' ); // Connectie maken
+		$db = new PDO('mysql:host=localhost;dbname=bieren', 'root', '' );
 
 		if ( isset( $_POST['delete'] ) )
 		{
+            $deleteFK = 'UPDATE bieren SET brouwernr = null WHERE brouwernr = :brouwernr';
+            $deleteFKStatement = $db->prepare( $deleteFK );
+            $deleteFKStatement->bindValue( ':brouwernr', $_POST['delete'] );
+            $FKisDeleted = $deleteFKStatement->execute();
+            
 			$deleteQuery = 'DELETE FROM brouwers WHERE brouwernr = :brouwernr';
 			$deleteStatement = $db->prepare( $deleteQuery );
 			$deleteStatement->bindValue( ':brouwernr', $_POST['delete'] );
@@ -27,12 +32,19 @@
         if ( isset( $_POST[ 'edit' ] ) )
 		{
 
+            $brouwersEdit	=	query( $db, 'SELECT * FROM brouwers WHERE brouwernr = :brouwernr', array( ':brouwernr' => $_POST[ 'edit' ] ) );
+            $message['text']	=	'Update op de brouwer ' . $brouwersEdit['data'][0]['brouwernr'];
+            
+            if ( $_POST['edit'] == 'Wijzigen') {
+                
 			$updateQuery = 'UPDATE brouwers SET brnaam = :brnaam,
 											adres =	:adres,
 											postcode = :postcode,
 											gemeente = :gemeente,
 											omzet =	:omzet
 									WHERE brouwernr	= :brouwernr LIMIT 1';
+            
+            var_dump($_POST);
 
 			$statement = $db->prepare( $updateQuery );
 			$statement->bindValue( ":brouwernr",  $_POST[ 'brouwernr' ] );						
@@ -43,17 +55,18 @@
 			$statement->bindValue( ":omzet",  $_POST[ 'omzet' ] );
 
 			$updateSuccessful = $statement->execute();
-
-			if ( $updateSuccessful )
-			{
-				$message['text']	=	'Update op de brouwer ' . $_POST[ 'brnaam' ] . ' succesvol uitgevoerd.';
-                $brouwersEdit	=	query( $db, 'SELECT * FROM brouwers WHERE brouwernr = :brouwernr', array( ':brouwernr' => $_POST[ 'edit' ] ) );
-			}
-			else
-			{
-				$message['text']	=	'Update op de brouwer ' . $_POST[ 'brnaam' ] . ' is mislukt.';
-			}			
-
+                
+                if ( $updateSuccessful )
+			     {
+			     	$message['text']	=	'Update op de brouwer ' . $_POST[ 'brnaam' ] . ' succesvol uitgevoerd.';
+                    
+			     }
+			     else
+			     {
+			     	$message['text']	=	'Update op de brouwer ' . $_POST[ 'brnaam' ] . ' is mislukt.';
+			     }		
+                
+            }
 		}
 
 		$brouwersQuery	=	'SELECT * FROM brouwers';
@@ -134,42 +147,37 @@
             echo $message['text'];
         }
         ?>
-            
-        <?php if ( $brouwersEdit ){
+
+            <?php if ( $brouwersEdit ){
             
             echo '<form action="opdracht-crud-update.php" method="POST">';
             echo '<ul>';
             foreach($brouwersEdit['data'][0] as $fieldname => $value) {
                 if ( $fieldname != "brouwernr" ){
                     echo '<li>';
-                    echo '<label for="' . $fieldname . '"><?= $fieldname ?></label>';
-                    echo '<input type="text" id="' . $fieldname . '" name="' . $fieldname . '" value="' . $value . '">';
-                    echo '</li>';
-                }
-            }
-            echo '</ul>';
-            echo '<input type="hidden" value="' . $brouwersEdit['data'][0]['brouwernr'] . '" name="brouwernr">';
-            echo '<input type="submit" name="edit" value="Wijzigen">';
-            echo '</form>';
-        }?>
+                    echo '<label for="' . $fieldname . '"><?= $fieldname ?>
+                </label>'; echo '
+                <input type="text" id="' . $fieldname . '" name="' . $fieldname . '" value="' . $value . '">'; echo '</li>'; } } echo '</ul>'; echo '
+                <input type="hidden" value="' . $brouwersEdit['data'][0]['brouwernr'] . '" name="brouwernr">'; echo '
+                <input type="submit" name="edit" value="Wijzigen">'; echo '</form>'; }?>
 
-            <form action="<?php echo 'opdracht-crud-update.php' ?>" method="POST">
-                <table>
+                <form action="<?php echo 'opdracht-crud-update.php' ?>" method="POST">
+                    <table>
 
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <?php foreach ($brouwersFieldnames as $fieldname){
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <?php foreach ($brouwersFieldnames as $fieldname){
                                     echo "<th>" . $fieldname . "</th>";
                                 } 
                     
                             ?>
-                                <th></th>
-                        </tr>
-                    </thead>
+                                    <th></th>
+                            </tr>
+                        </thead>
 
-                    <tbody>
-                        <?php foreach ($brouwers as $key => $brouwer){
+                        <tbody>
+                            <?php foreach ($brouwers as $key => $brouwer){
                             echo '<tr>';
                             echo '<td>' . ++$key . '</td>';
                             foreach ($brouwer as $value) {
@@ -179,9 +187,9 @@
                             echo '<td> <button type="submit" name="edit" value="' . $brouwer['brouwernr'] . '" class="edit-button"> <img src="icon-edit.png" alt="Edit button"></button></td>';
                             echo '</tr>';
                         } ?>
-                    </tbody>
-                </table>
-            </form>
+                        </tbody>
+                    </table>
+                </form>
     </body>
 
     </html>

@@ -1,8 +1,8 @@
 <?php
 
-    include("Classes/Animal.php");
-    include("Classes/Lion.php");
-    include("Classes/Zebra.php");
+    function __autoload($classname) {
+        require_once('Classes/' . $classname . '.php');
+    }
 
 	$Kermit	= new Animal('Kermit', 'male', 100);
 	$Dikkie	= new Animal('Dikkie', 'male', 100);
